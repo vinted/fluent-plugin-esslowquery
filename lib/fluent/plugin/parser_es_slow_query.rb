@@ -1,6 +1,6 @@
 module Fluent
   class ElasticsearchSlowQueryLogParser < Parser
-    REGEXP = /^\[(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3})\]\[(?<severity>[a-zA-Z]+\s*)\]\[(?<source>\S+)\] \[(?<node>\S+)\]took\[(?<took>\S+)ms\], took_millis\[(?<took_millis>\d+)\], types\[(?<types>.*)\], stats\[(?<stats>.*)\], search_type\[(?<search_type>.*)\], total_shards\[(?<total_shards>\d+)\], source\[(?<source_body>.*)\], extra_source\[(?<extra_source>.*)\]/
+    REGEXP = /^\[(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3})\]\[(?<severity>[a-zA-Z]+\s*)\]\[(?<source>\S+)\] \[(?<node>\S+)\]took\[(?<took>\S+)m?s\], took_millis\[(?<took_millis>\d+)\], types\[(?<types>.*)\], stats\[(?<stats>.*)\], search_type\[(?<search_type>.*)\], total_shards\[(?<total_shards>\d+)\], source\[(?<source_body>.*)\], extra_source\[(?<extra_source>.*)\]/
     TIME_FORMAT = "%Y-%m-%d %H:%M:%S,%N"
 
     Plugin.register_parser("es_slow_query", self)
@@ -26,7 +26,6 @@ module Fluent
         end
       end
 
-      shard = m['shard'].to_i
       took_millis = m['took_millis'].to_i
       total_shards = m['total_shards'].to_i
 
@@ -37,8 +36,6 @@ module Fluent
         'severity' => m['severity'],
         'source' => m['source'],
         'node' => m['node'],
-        'index' => m['index'],
-        'shard' => shard,
         'took' => m['took'],
         'took_millis' => took_millis,
         'types' => m['types'],
