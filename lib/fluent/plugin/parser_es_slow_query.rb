@@ -15,8 +15,8 @@ module Fluent
     source_body = /source\[(?<source_body>.*)\]/
 
     REGEXP = /#{time}#{severity}#{source} #{node} #{index}#{shard} #{took}, #{took_millis}, #{types}, #{stats}, #{search_type}, #{total_shards}, #{source_body}/
-
     TIME_FORMAT = "%Y-%m-%dT%H:%M:%S,%N"
+
 
     Plugin.register_parser("es_slow_query", self)
 
@@ -41,7 +41,6 @@ module Fluent
         end
       end
 
-      shard = m['shard'].to_i
       took_millis = m['took_millis'].to_i
       total_shards = m['total_shards'].to_i
 
@@ -52,8 +51,6 @@ module Fluent
         'severity' => m['severity'],
         'source' => m['source'],
         'node' => m['node'],
-        'index' => m['index'],
-        'shard' => shard,
         'took' => m['took'],
         'took_millis' => took_millis,
         'types' => m['types'],
