@@ -1,7 +1,22 @@
 module Fluent
   class ElasticsearchSlowQueryLogParser < Parser
-    REGEXP = /^\[(?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3})\]\[(?<severity>[a-zA-Z]+\s*)\]\[(?<source>\S+)\] \[(?<node>\S+)\] \[(?<index>\w+)\]\[(?<shard>\d+)\] took\[(?<took>.+)\], took_millis\[(?<took_millis>\d+)\], types\[(?<types>.*)\], stats\[(?<stats>.*)\], search_type\[(?<search_type>.*)\], total_shards\[(?<total_shards>\d+)\], source\[(?<source_body>.*)\], extra_source\[(?<extra_source>.*)\]/
-    TIME_FORMAT = "%Y-%m-%d %H:%M:%S,%N"
+    time = /^\[(?<time>\d{4}-\d{2}-\d{2}.*\d{2}:\d{2}:\d{2},\d{3})\]/
+    severity = /\[(?<severity>[a-zA-Z]+\s*)\]/
+    source = /\[(?<source>\S+)\]/
+    node = /\[(?<node>\S+)\]/
+    index = /\[(?<index>[-a-zA-Z0-9_]+)\]/
+    shard = /\[(?<shard>\S+)\]/
+    took = /took\[(?<took>\S+)m?s\]/
+    took_millis = /took_millis\[(?<took_millis>\d+)\]/
+    types = /types\[(?<types>.*)\]/
+    stats = /stats\[(?<stats>)\]/
+    search_type = /search_type\[(?<search_type>.*)\]/
+    total_shards = /total_shards\[(?<total_shards>\d+)\]/
+    source_body = /source\[(?<source_body>.*)\]/
+
+    REGEXP = /#{time}#{severity}#{source} #{node} #{index}#{shard} #{took}, #{took_millis}, #{types}, #{stats}, #{search_type}, #{total_shards}, #{source_body}/
+
+    TIME_FORMAT = "%Y-%m-%dT%H:%M:%S,%N"
 
     Plugin.register_parser("es_slow_query", self)
 
@@ -46,7 +61,6 @@ module Fluent
         'search_type' => m['search_type'],
         'total_shards' => total_shards,
         'source_body' => m['source_body'],
-        'extra_source' => m['extra_source']
       }
       record["time"] = m['time'] if @keep_time_key
 
