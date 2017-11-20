@@ -15,6 +15,7 @@ module Fluent
     source_body = /source\[(?<source_body>.*)\]/
 
     REGEXP = /#{time}#{severity}#{source} #{node} #{index}#{shard} #{took}, #{took_millis}, #{types}, #{stats}, #{search_type}, #{total_shards}, #{source_body}/
+    NAMED_QUERY = /"_name":\s?"NQ: (?<named_query>[^"]*)"/
     TIME_FORMAT = "%Y-%m-%dT%H:%M:%S,%N"
 
 
@@ -46,6 +47,7 @@ module Fluent
 
       time = m['time']
       time = @mutex.synchronize { @time_parser.parse(time) }
+      nq = NAMED_QUERY.match(m['source_body'])
 
       record = {
         'severity' => m['severity'],
@@ -58,6 +60,7 @@ module Fluent
         'search_type' => m['search_type'],
         'total_shards' => total_shards,
         'source_body' => m['source_body'],
+        'nq' => nq['named_query']
       }
       record["time"] = m['time'] if @keep_time_key
 
