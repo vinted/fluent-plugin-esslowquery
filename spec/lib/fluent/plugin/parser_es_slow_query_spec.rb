@@ -44,10 +44,18 @@ RSpec.describe Fluent::ElasticsearchSlowQueryLogParser do
       it { is_expected.to eq(parsed_fields) }
     end
 
-    context 'with named query and country' do
+    context 'with country' do
       let(:text) { '"_name": "NQ: query_name|COUNTRY: lt"' }
       let(:query_name) { 'query_name' }
       let(:country) { 'lt' }
+
+      it { is_expected.to eq(parsed_fields) }
+    end
+
+    context 'with underscored country' do
+      let(:text) { '"_name": "NQ: query_name|COUNTRY: sb_lt_babies"' }
+      let(:query_name) { 'query_name' }
+      let(:country) { 'sb_lt_babies' }
 
       it { is_expected.to eq(parsed_fields) }
     end
