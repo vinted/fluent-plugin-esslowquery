@@ -14,5 +14,6 @@ Gem::Specification.new do |gem|
   gem.version       = "1.1.0"
   gem.add_dependency "fluentd", [">= 0.12.0", "< 2"]
 
+  gem.add_development_dependency 'pry'
   gem.add_development_dependency 'rspec', '~> 3.7'
 end
