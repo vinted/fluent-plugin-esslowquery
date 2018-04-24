@@ -1,3 +1,5 @@
+require 'fluent/parser'
+
 module Fluent
   class ElasticsearchSlowQueryLogParser < Parser
     time = /^\[(?<time>\d{4}-\d{2}-\d{2}.*\d{2}:\d{2}:\d{2},\d{3})\]/
@@ -15,7 +17,6 @@ module Fluent
     source_body = /source\[(?<source_body>.*)\]/
 
     REGEXP = /#{time}#{severity}#{source} #{node} #{index}#{shard} #{took}, #{took_millis}, #{types}, #{stats}, #{search_type}, #{total_shards}, #{source_body}/
-    NAMED_QUERY = /"_name":\s?"NQ: (?<named_query>[^"]*)"/
     TIME_FORMAT = "%Y-%m-%dT%H:%M:%S,%N"
 
 
@@ -47,7 +48,7 @@ module Fluent
 
       time = m['time']
       time = @mutex.synchronize { @time_parser.parse(time) }
-      nq = NAMED_QUERY.match(m['source_body'])
+      nq = Fluent::ElasticsearchSlowQueryLogParser::NamedQuery.parse(m['source_body'])
 
       record = {
         'severity' => m['severity'],
@@ -60,7 +61,8 @@ module Fluent
         'search_type' => m['search_type'],
         'total_shards' => total_shards,
         'source_body' => m['source_body'],
-        'nq' => nq['named_query']
+        'nq' => nq['query_name'],
+        'country' => nq['country'],
       }
       record["time"] = m['time'] if @keep_time_key
 
