@@ -48,7 +48,7 @@ module Fluent
 
       time = m['time']
       time = @mutex.synchronize { @time_parser.parse(time) }
-      nq = Fluent::ElasticsearchSlowQueryLogParser::NamedQuery.parse(m['source_body'])
+      nq = parse_named_query(m['source_body'])
 
       record = {
         'severity' => m['severity'],
@@ -71,6 +71,16 @@ module Fluent
       else
         return time, record
       end
+    end
+
+    def parse_named_query(text)
+      regex = /"_name":\s?"NQ: (?<query_name>.*?)(\|COUNTRY: (?<country>lt))?"/
+      matched = regex.match(text)&.named_captures || {}
+
+      {
+        'query_name' => matched['query_name'] || 'unknown',
+        'country' => matched['country'] || 'unknown',
+      }
     end
   end
 end
