@@ -1,5 +1,3 @@
-require 'fluent/parser'
-
 module Fluent
   class ElasticsearchSlowQueryLogParser < Parser
     time = /^\[(?<time>\d{4}-\d{2}-\d{2}.*\d{2}:\d{2}:\d{2},\d{3})\]/
@@ -17,6 +15,7 @@ module Fluent
     source_body = /source\[(?<source_body>.*)\]/
 
     REGEXP = /#{time}#{severity}#{source} #{node} #{index}#{shard} #{took}, #{took_millis}, #{types}, #{stats}, #{search_type}, #{total_shards}, #{source_body}/
+    NAMED_QUERY_REGEX = /"_name":\s?"NQ: (?<query_name>.*?)(\|COUNTRY: (?<country>lt))?"/
     TIME_FORMAT = "%Y-%m-%dT%H:%M:%S,%N"
 
 
@@ -74,12 +73,12 @@ module Fluent
     end
 
     def parse_named_query(text)
-      regex = /"_name":\s?"NQ: (?<query_name>.*?)(\|COUNTRY: (?<country>lt))?"/
-      matched = regex.match(text)&.named_captures || {}
+      matched_data = NAMED_QUERY_REGEX.match(text)
+      matched = matched_data && matched_data.captures || []
 
       {
-        'query_name' => matched['query_name'] || 'unknown',
-        'country' => matched['country'] || 'unknown',
+        'query_name' => matched[0] || 'unknown',
+        'country' => matched[1] || 'unknown',
       }
     end
   end
