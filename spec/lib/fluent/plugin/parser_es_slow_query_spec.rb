@@ -37,7 +37,7 @@ RSpec.describe Fluent::ElasticsearchSlowQueryLogParser do
     let(:parsed_fields) { { 'query_name' => query_name, 'country' => country } }
 
     context 'with named query' do
-      let(:text) { '"_name": "NQ: query_name"' }
+      let(:text) { '"_name": "NQ: query_name", "other_key": "other_value"' }
       let(:query_name) { 'query_name' }
       let(:country) { 'unknown' }
 
@@ -45,7 +45,7 @@ RSpec.describe Fluent::ElasticsearchSlowQueryLogParser do
     end
 
     context 'with country' do
-      let(:text) { '"_name": "NQ: query_name|COUNTRY: lt"' }
+      let(:text) { '"_name": "NQ: query_name|COUNTRY: lt", "other_key": "other_value"' }
       let(:query_name) { 'query_name' }
       let(:country) { 'lt' }
 
@@ -53,7 +53,7 @@ RSpec.describe Fluent::ElasticsearchSlowQueryLogParser do
     end
 
     context 'with underscored country' do
-      let(:text) { '"_name": "NQ: query_name|COUNTRY: sb_lt_babies"' }
+      let(:text) { '"_name": "NQ: query_name|COUNTRY: sb_lt_babies", "other_key": "other_value"' }
       let(:query_name) { 'query_name' }
       let(:country) { 'sb_lt_babies' }
 

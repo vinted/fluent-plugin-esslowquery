@@ -15,7 +15,7 @@ module Fluent
     source_body = /source\[(?<source_body>.*)\]/
 
     REGEXP = /#{time}#{severity}#{source} #{node} #{index}#{shard} #{took}, #{took_millis}, #{types}, #{stats}, #{search_type}, #{total_shards}, #{source_body}/
-    NAMED_QUERY_REGEX = /"_name":\s?"NQ: (?<query_name>.*?)(\|COUNTRY: (?<country>.*))?"/
+    NAMED_QUERY_REGEX = /"_name":\s?"NQ: (?<query_name>.*?)(\|COUNTRY: (?<country>.*?(?=\")))?"/
     TIME_FORMAT = "%Y-%m-%dT%H:%M:%S,%N"
 
 
