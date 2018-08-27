@@ -1,4 +1,4 @@
-RSpec.describe Fluent::ElasticsearchSlowQueryLogParser do
+RSpec.describe Fluent::Plugin::ElasticsearchSlowQueryLogParser do
   let(:parser) { described_class.new }
 
   describe '#parse' do
@@ -19,6 +19,7 @@ RSpec.describe Fluent::ElasticsearchSlowQueryLogParser do
       expect(log['severity']).to eq('TRACE')
       expect(log['source']).to eq('index.search.slowlog.query')
       expect(log['node']).to eq('m3-hx-corelastic-data1.vinted.net')
+      expect(log['index']).to eq('fr-core-items_20180109082540')
       expect(log['took']).to eq('203m')
       expect(log['took_millis']).to eq(203)
       expect(log['types']).to eq('item')
