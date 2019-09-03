@@ -46,7 +46,10 @@ module Fluent
 
         time = m['time']
         time = @mutex.synchronize { @time_parser.parse(time) }
-        nq = parse_named_query(m['source_body'])
+
+        source_body = m['source_body']
+
+        nq = parse_named_query(source_body)
 
         record = {
           'severity' => m['severity'],
@@ -58,9 +61,11 @@ module Fluent
           'stats' => m['stats'],
           'search_type' => m['search_type'],
           'total_shards' => total_shards,
-          'source_body' => m['source_body'],
+          'source_body' => source_body,
           'nq' => nq['query_name'],
           'country' => nq['country'],
+          'from' => source_body['from'],
+          'size' => source_body['size'],
         }
         record["time"] = m['time'] if @keep_time_key
 
