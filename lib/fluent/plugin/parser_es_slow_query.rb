@@ -65,8 +65,8 @@ module Fluent
           'source_body' => source_body,
           'nq' => nq['query_name'],
           'country' => nq['country'],
-          'from' => parsed_source_body['from'],
-          'size' => parsed_source_body['size'],
+          'source_body_from' => parsed_source_body['from'],
+          'source_body_size' => parsed_source_body['size'],
         }
         record["time"] = m['time'] if @keep_time_key
 
