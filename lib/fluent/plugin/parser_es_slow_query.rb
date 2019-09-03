@@ -48,6 +48,7 @@ module Fluent
         time = @mutex.synchronize { @time_parser.parse(time) }
 
         source_body = m['source_body']
+        parsed_source_body = JSON.parse(source_body)
 
         nq = parse_named_query(source_body)
 
@@ -64,8 +65,8 @@ module Fluent
           'source_body' => source_body,
           'nq' => nq['query_name'],
           'country' => nq['country'],
-          'from' => source_body['from'],
-          'size' => source_body['size'],
+          'from' => parsed_source_body['from'],
+          'size' => parsed_source_body['size'],
         }
         record["time"] = m['time'] if @keep_time_key
 

@@ -6,11 +6,11 @@ RSpec.describe Fluent::Plugin::ElasticsearchSlowQueryLogParser do
 
     include_context 'elasticsearch query'
 
-    let(:log_text) do
-      "[2018-04-19T00:00:02,270][TRACE][index.search.slowlog.query] [m3-hx-corelastic-data1.vinted.net] [fr-core-items_20180109082540][13] took[203ms], took_millis[203], types[item], stats[], search_type[QUERY_THEN_FETCH], total_shards[16], source[#{source}]"
-    end
+    let(:log_text) { File.read('spec/files/elastic.log').lines.first }
 
-    let(:source) { query.to_json }
+    let(:source) {
+      query.to_json
+    }
     let(:log) { subject[1] }
 
     specify do
@@ -18,16 +18,18 @@ RSpec.describe Fluent::Plugin::ElasticsearchSlowQueryLogParser do
       expect(log).not_to be_nil
       expect(log['severity']).to eq('TRACE')
       expect(log['source']).to eq('index.search.slowlog.query')
-      expect(log['node']).to eq('m3-hx-corelastic-data1.vinted.net')
-      expect(log['took']).to eq('203m')
-      expect(log['took_millis']).to eq(203)
+      expect(log['node']).to eq('m1-machine.net')
+      expect(log['took']).to eq('159.8m')
+      expect(log['took_millis']).to eq(159)
       expect(log['types']).to eq('item')
       expect(log['stats']).to eq('')
       expect(log['search_type']).to eq('QUERY_THEN_FETCH')
-      expect(log['total_shards']).to eq(16)
-      expect(log['source_body']).to eq(source)
-      expect(log['nq']).to eq('smart_items_lookup')
-      expect(log['country']).to eq('unknown')
+      expect(log['total_shards']).to eq(100)
+      expect(JSON.parse(log['source_body'])).to eq(query)
+      expect(log['nq']).to eq('regular_items_lookup')
+      expect(log['country']).to eq('BD')
+      expect(log['from']).to eq(44)
+      expect(log['size']).to eq(22)
     end
   end
 
