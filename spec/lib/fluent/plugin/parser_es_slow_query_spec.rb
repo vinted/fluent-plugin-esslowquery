@@ -1,4 +1,4 @@
-RSpec.describe Fluent::ElasticsearchSlowQueryLogParser do
+RSpec.describe Fluent::Plugin::ElasticsearchSlowQueryLogParser do
   let(:parser) { described_class.new }
 
   describe '#parse' do
