@@ -56,6 +56,7 @@ module Fluent
           'severity' => m['severity'],
           'source' => m['source'],
           'node' => m['node'],
+          'index' => m['index'],
           'took' => m['took'],
           'took_millis' => took_millis,
           'types' => m['types'],

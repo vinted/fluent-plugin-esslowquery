@@ -19,6 +19,7 @@ RSpec.describe Fluent::Plugin::ElasticsearchSlowQueryLogParser do
       expect(log['severity']).to eq('TRACE')
       expect(log['source']).to eq('index.search.slowlog.query')
       expect(log['node']).to eq('m1-machine.net')
+      expect(log['index']).to eq('fr-core-items_20190902053448')
       expect(log['took']).to eq('159.8m')
       expect(log['took_millis']).to eq(159)
       expect(log['types']).to eq('item')
@@ -28,8 +29,8 @@ RSpec.describe Fluent::Plugin::ElasticsearchSlowQueryLogParser do
       expect(JSON.parse(log['source_body'])).to eq(query)
       expect(log['nq']).to eq('regular_items_lookup')
       expect(log['country']).to eq('BD')
-      expect(log['from']).to eq(44)
-      expect(log['size']).to eq(22)
+      expect(log['source_body_from']).to eq(44)
+      expect(log['source_body_size']).to eq(22)
     end
   end
 
