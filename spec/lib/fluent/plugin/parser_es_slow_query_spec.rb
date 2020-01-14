@@ -19,6 +19,7 @@ RSpec.describe Fluent::Plugin::ElasticsearchSlowQueryLogParser do
       expect(log['severity']).to eq('TRACE')
       expect(log['source']).to eq('index.search.slowlog.query')
       expect(log['node']).to eq('m1-machine.net')
+      expect(log['index']).to eq('fr-core-items_20190902053448')
       expect(log['took']).to eq('159.8m')
       expect(log['took_millis']).to eq(159)
       expect(log['types']).to eq('item')
