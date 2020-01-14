@@ -1,6 +1,6 @@
 #fluent-plugin-esslowquery
 
-[![Build Status](https://travis-ci.com/dainiusjocas/fluent-plugin-esslowquery.svg?branch=master)](https://travis-ci.com/dainiusjocas/fluent-plugin-esslowquery)
+[![Build Status](https://travis-ci.com/vinted/fluent-plugin-esslowquery.svg?branch=master)](https://travis-ci.com/vinted/fluent-plugin-esslowquery)
 
 Fluent parser plugin for Elasticsearch slow query log file.
 
