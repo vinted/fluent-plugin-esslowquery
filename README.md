@@ -1,14 +1,16 @@
-#fluent-plugin-esslowquery
+# fluent-plugin-esslowquery
+
+[![Build Status](https://travis-ci.com/vinted/fluent-plugin-esslowquery.svg?branch=master)](https://travis-ci.com/vinted/fluent-plugin-esslowquery)
 
 Fluent parser plugin for Elasticsearch slow query log file.
 
-##Installation
+## Installation
 
 ```shell
 $ td-agent-gem install fluent-plugin-esslowquery
 ```
 
-##How to use
+## How to use
 
 Edit `/etc/td-agent/td-agent.conf` file.
 
@@ -30,7 +32,7 @@ Edit `/etc/td-agent/td-agent.conf` file.
 </source>
 ```
 
-##Expected record format
+## Expected record format
 
 ### Slow Query
 ```json
