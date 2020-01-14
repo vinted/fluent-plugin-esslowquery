@@ -28,8 +28,8 @@ RSpec.describe Fluent::Plugin::ElasticsearchSlowQueryLogParser do
       expect(JSON.parse(log['source_body'])).to eq(query)
       expect(log['nq']).to eq('regular_items_lookup')
       expect(log['country']).to eq('BD')
-      expect(log['from']).to eq(44)
-      expect(log['size']).to eq(22)
+      expect(log['source_body_from']).to eq(44)
+      expect(log['source_body_size']).to eq(22)
     end
   end
 
