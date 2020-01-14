@@ -1,0 +1,10 @@
+language: ruby
+rvm:
+- 2.6.4
+- 2.5.1
+before_install:
+- gem install bundler
+script:
+- bundle exec rspec
+after_success:
+- export PRONTO_PULL_REQUEST_ID=${TRAVIS_PULL_REQUEST} && bundle exec pronto run -f github_pr
