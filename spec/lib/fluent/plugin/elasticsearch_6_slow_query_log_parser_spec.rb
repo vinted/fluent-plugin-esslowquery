@@ -6,7 +6,7 @@ RSpec.describe Fluent::Plugin::ElasticsearchSlowQueryLogParser do
 
     include_context 'elasticsearch query'
 
-    let(:log_text) { File.read('spec/files/elastic.log').lines.first }
+    let(:log_text) { File.read('spec/files/elasticsearch-6-slow-query-log.log').lines.first }
 
     let(:source) {
       query.to_json
@@ -19,19 +19,19 @@ RSpec.describe Fluent::Plugin::ElasticsearchSlowQueryLogParser do
       expect(log['severity']).to eq('TRACE')
       expect(log['source']).to eq('index.search.slowlog.query')
       expect(log['node']).to eq('m1-machine.net')
-      expect(log['index']).to eq('fr-core-items_20190902053448')
-      expect(log['took']).to eq('159.8m')
-      expect(log['took_millis']).to eq(159)
+      expect(log['index']).to eq('de_babies-core-items_20200212093027')
+      expect(log['took']).to eq('151.4m')
+      expect(log['took_millis']).to eq(151)
       expect(log['types']).to eq('item')
       expect(log['stats']).to eq('')
       expect(log['search_type']).to eq('QUERY_THEN_FETCH')
-      expect(log['total_shards']).to eq(100)
-      expect(JSON.parse(log['source_body'])).to eq(query)
-      expect(log['nq']).to eq('regular_items_lookup')
-      expect(log['country']).to eq('BD')
-      expect(log['source_body_from']).to eq(44)
+      expect(log['total_shards']).to eq(60)
+      expect(JSON.parse(log['source_body'])).to eq({"from"=>22, "size"=>22, "timeout"=>"500ms", "query"=>{"match_all"=>{}}, "_source"=>false})
+      expect(log['nq']).to eq('unknown')
+      expect(log['country']).to eq('unknown')
+      expect(log['source_body_from']).to eq(22)
       expect(log['source_body_size']).to eq(22)
-      expect(log['total_hits']).to be_nil
+      expect(log['total_hits']).to eq('267288')
     end
   end
 
