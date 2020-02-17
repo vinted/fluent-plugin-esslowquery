@@ -1,0 +1,1 @@
+[2020-02-17T10:11:49,474][TRACE][index.search.slowlog.query] [m1-machine.net] [de_babies-core-items_20200212093027][57] took[151.4ms], took_millis[151], total_hits[267288], types[item], stats[], search_type[QUERY_THEN_FETCH], total_shards[60], source[{"from":22,"size":22,"timeout":"500ms","query":{"match_all":{}},"_source":false}], id[],

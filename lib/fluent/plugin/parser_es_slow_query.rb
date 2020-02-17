@@ -14,9 +14,10 @@ module Fluent
       stats = /stats\[(?<stats>)\]/
       search_type = /search_type\[(?<search_type>.*)\]/
       total_shards = /total_shards\[(?<total_shards>\d+)\]/
-      source_body = /source\[(?<source_body>.*)\]/
-
-      REGEXP = /#{time}#{severity}#{source} #{node} #{index}#{shard} #{took}, #{took_millis}, #{types}, #{stats}, #{search_type}, #{total_shards}, #{source_body}/
+      source_body = /source\[(?<source_body>.*)\](\n|, id\[(?<id>.*)\])/
+      total_hits = /total_hits\[(?<total_hits>\d+)\]/
+      
+      REGEXP = /#{time}#{severity}#{source} #{node} #{index}#{shard} #{took}, #{took_millis}(, #{total_hits})?, #{types}, #{stats}, #{search_type}, #{total_shards}, #{source_body}/
       NAMED_QUERY_REGEX = /"_name":\s?"NQ: (?<query_name>.*?)(\|COUNTRY: (?<country>.*?(?=\")))?"/
       TIME_FORMAT = "%Y-%m-%dT%H:%M:%S,%N"
 
@@ -68,6 +69,7 @@ module Fluent
           'country' => nq['country'],
           'source_body_from' => parsed_source_body['from'],
           'source_body_size' => parsed_source_body['size'],
+          'total_hits' => m['total_hits'],
         }
         record["time"] = m['time'] if @keep_time_key
 
