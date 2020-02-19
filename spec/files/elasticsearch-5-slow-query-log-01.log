@@ -1,1 +1,1 @@
-[2020-02-19T15:17:25,193][TRACE][index.search.slowlog.query] [m1-machine.net] [fr-core-items_555][26] took[261.6ms], took_millis[261], types[item], stats[], search_type[QUERY_THEN_FETCH], total_shards[84], source[{"very_slow_query":"n84zm5vo5qax"}]
+[2020-02-19T15:17:25,193][TRACE][index.search.slowlog.query] [m1-machine.net] [fr-core-items_555][26] took[261.6ms], took_millis[261], types[item], stats[], search_type[QUERY_THEN_FETCH], total_shards[84], source[{"very_slow_query":"n84zm5vo5qax"}],
