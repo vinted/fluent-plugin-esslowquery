@@ -14,7 +14,7 @@ module Fluent
       stats = /stats\[(?<stats>)\]/
       search_type = /search_type\[(?<search_type>.*)\]/
       total_shards = /total_shards\[(?<total_shards>\d+)\]/
-      source_body = /source\[(?<source_body>.*)\](\n|, id\[(?<id>.*)\])/
+      source_body = /source((\[(?<source_body>.*)\], id\[(?<id>.*)\])|(\[(?<only_source_body>.*)\]))/
       total_hits = /total_hits\[(?<total_hits>\d+)\]/
       
       REGEXP = /#{time}#{severity}#{source} #{node} #{index}#{shard} #{took}, #{took_millis}(, #{total_hits})?, #{types}, #{stats}, #{search_type}, #{total_shards}, #{source_body}/
@@ -49,6 +49,12 @@ module Fluent
         time = @mutex.synchronize { @time_parser.parse(time) }
 
         source_body = m['source_body']
+        only_source_body = m['only_source_body']
+        source_body = if source_body
+          source_body
+        else
+          only_source_body
+        end
         parsed_source_body = JSON.parse(source_body)
 
         nq = parse_named_query(source_body)
