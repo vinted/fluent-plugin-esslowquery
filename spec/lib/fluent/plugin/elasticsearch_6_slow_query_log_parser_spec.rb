@@ -31,7 +31,7 @@ RSpec.describe Fluent::Plugin::ElasticsearchSlowQueryLogParser do
       expect(log['country']).to eq('unknown')
       expect(log['source_body_from']).to eq(22)
       expect(log['source_body_size']).to eq(22)
-      expect(log['total_hits']).to eq('267288')
+      expect(log['total_hits']).to eq(267288)
     end
   end
 

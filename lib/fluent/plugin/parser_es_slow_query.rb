@@ -43,6 +43,7 @@ module Fluent
         end
 
         took_millis = m['took_millis'].to_i
+        total_hits = m['total_hits'].to_i unless m['total_hits'] == nil
         total_shards = m['total_shards'].to_i
 
         time = m['time']
@@ -75,7 +76,7 @@ module Fluent
           'country' => nq['country'],
           'source_body_from' => parsed_source_body['from'],
           'source_body_size' => parsed_source_body['size'],
-          'total_hits' => m['total_hits'],
+          'total_hits' => total_hits,
         }
         record["time"] = m['time'] if @keep_time_key
 
